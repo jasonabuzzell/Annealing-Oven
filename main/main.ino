@@ -31,12 +31,8 @@ int ref[4][3] = {
   {1, 11, 13}
 };
 
-/* 
-Serial cannot be used because IO pin 1 is being used by the passive speaker.
-In order to use Serial, add a multiplexer to enable more than 12 digital pins.
-*/
 void setup() {
-  // Serial.begin(115200);
+  Serial.begin(115200);
   pinMode(7, OUTPUT);
   pinMode(8, OUTPUT);
   pinMode(9, INPUT_PULLUP);
@@ -63,9 +59,9 @@ void setup() {
    
   for (int Note = 0; Note < 3; Note++) {
     int Note_Dur = 1000 / duration_three[Note];
-    tone(1, melody_three[Note], Note_Dur);
+    tone(10, melody_three[Note], Note_Dur);
     delay(1.3 * Note_Dur);
-    noTone(1);
+    noTone(10);
   }
 }
 
@@ -93,9 +89,9 @@ void loop() {
       }
       for (int Note = 0; Note < 4; Note++) {
         int Note_Dur = 1000 / duration_one[Note];
-        tone(1, melody_one[Note], Note_Dur);
+        tone(10, melody_one[Note], Note_Dur);
         delay(1.3 * Note_Dur);
-        noTone(1);
+        noTone(10);
       }
       
       digitalWrite(7, HIGH);
@@ -103,7 +99,7 @@ void loop() {
 
     // Hit NEXT
     } else if (digitalRead(13) == LOW) {
-      // Serial.println(ref[selector][1], ref[selector][0]);
+      Serial.println(ref[selector][1], ref[selector][0]);
       if (! state) {
         lcd.setCursor(ref[selector][1], ref[selector][0]);
         lcd.print(value);
@@ -129,9 +125,9 @@ void loop() {
       }
       for (int Note = 0; Note < 3; Note++) {
         int Note_Dur = 1000 / duration_two[Note];
-        tone(1, melody_two[Note], Note_Dur);
+        tone(10, melody_two[Note], Note_Dur);
         delay(1.3 * Note_Dur);
-        noTone(1);
+        noTone(10);
       }
 
     // Update Frame and Check Potentiometer
@@ -173,10 +169,10 @@ void loop() {
   // CYCLE PHASE
   } else {
     lcd.clear();
-    // Serial.println("Temp: " + String(anneal_temp));
-    // Serial.println("HU: " + String(heat_up));
-    // Serial.println("H: " + String(hold));
-    // Serial.println("CD: " + String(cool_down));
+    Serial.println("Temp: " + String(anneal_temp));
+    Serial.println("HU: " + String(heat_up));
+    Serial.println("H: " + String(hold));
+    Serial.println("CD: " + String(cool_down));
 
     // Heat-up Procedure
     timer = 0;
@@ -193,9 +189,9 @@ void loop() {
         digitalWrite(8, LOW);
         heater = 0;
       }
-      // Serial.print("Current temp: " + String(cur_temp, 2) + " ");
-      // Serial.print("Expected temp: " + String(lin_temp, 2) + " ");
-      // Serial.println("Heater: " + String(heater));
+      Serial.print("Current temp: " + String(cur_temp, 2) + " ");
+      Serial.print("Expected temp: " + String(lin_temp, 2) + " ");
+      Serial.println("Heater: " + String(heater));
       line = "Heating to " + String(anneal_temp);
       line_two = "Cur: " + String(cur_temp, 2) + " " + String(percent) + "%";
       lcd.setCursor(0, 0);
@@ -225,9 +221,9 @@ void loop() {
         digitalWrite(8, LOW);
         heater = 0;
       }
-      // Serial.print("Current temp: " + String(cur_temp, 2) + " ");
-      // Serial.print("Expected temp: " + String(anneal_temp, 2) + " ");
-      // Serial.println("Heater: " + String(heater));
+      Serial.print("Current temp: " + String(cur_temp, 2) + " ");
+      Serial.print("Expected temp: " + String(anneal_temp, 2) + " ");
+      Serial.println("Heater: " + String(heater));
       line = "Holding at " + String(anneal_temp);
       line_two = "Cur: " + String(cur_temp, 2) + " " + String(percent) + "%";
       lcd.setCursor(0, 0);
@@ -258,9 +254,9 @@ void loop() {
         digitalWrite(8, LOW);
         heater = 0;
       }
-      // Serial.print("Current temp: " + String(cur_temp, 2) + " ");
-      // Serial.print("Expected temp: " + String(anneal_temp, 2) + " ");
-      // Serial.println("Heater: " + String(heater));
+      Serial.print("Current temp: " + String(cur_temp, 2) + " ");
+      Serial.print("Expected temp: " + String(anneal_temp, 2) + " ");
+      Serial.println("Heater: " + String(heater));
       line = "Cooling to " + String(room_temp);
       line_two = "Cur: " + String(cur_temp, 2) + " " + String(percent) + "%";
       lcd.setCursor(0, 0);
