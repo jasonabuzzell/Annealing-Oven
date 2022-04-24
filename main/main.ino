@@ -5,7 +5,7 @@
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 DHT dht(6, DHT11);
 
-int anneal_temp = 82.22, heat_up = 7200, hold = 2700, cool_down = 7200, state_timer = 100; //in ms * 10
+int anneal_temp = 82.22, heat_up = 7200, hold = 2700, cool_down = 7200, note_Dur = 1000, state_timer = 100; //in ms * 10
 int selector = 0, value = 0, potent = 0, last_potent = 0, general = 0, last_general = 0, timer = 0, percent = 0, heater = 0;
 float room_temp = 22.0, cur_temp = room_temp, lin_temp = room_temp;
 bool state = 1, flag = false;
@@ -21,8 +21,8 @@ int melody_three[3] = {NOTE_A4, NOTE_B4, NOTE_CS5};
 int duration_three[3] = {8, 8, 4};
 
 byte circle[8] = {0b00000, 0b00000, 0b01110, 0b11111, 0b11111, 0b11111, 0b01110, 0b00000};
-byte up_arrow[8] = {B00000, B00100, B01110, B10101, B00100, B00100, B00100, B00000};
-byte down_arrow[8] ={B00000, B00100, B00100, B00100, B10101, B01110, B00100, B00000};
+byte up_arrow[8] = {0b00000, 0b00100, 0b01110, 0b10101, 0b00100, 0b00100, 0b00100, 0b00000};
+byte down_arrow[8] ={0b00000, 0b00100, 0b00100, 0b00100, 0b10101, 0b01110, 0b00100, 0b00000};
 
 int ref[4][3] = {
   {0, 10, 12},
@@ -58,9 +58,9 @@ void setup() {
   dht.begin();
    
   for (int Note = 0; Note < 3; Note++) {
-    int Note_Dur = 1000 / duration_three[Note];
-    tone(10, melody_three[Note], Note_Dur);
-    delay(1.3 * Note_Dur);
+    note_Dur = 1000 / duration_three[Note];
+    tone(10, melody_three[Note], note_Dur);
+    delay(1.3 * note_Dur);
     noTone(10);
   }
 }
@@ -88,9 +88,9 @@ void loop() {
           break;
       }
       for (int Note = 0; Note < 4; Note++) {
-        int Note_Dur = 1000 / duration_one[Note];
-        tone(10, melody_one[Note], Note_Dur);
-        delay(1.3 * Note_Dur);
+        note_Dur = 1000 / duration_one[Note];
+        tone(10, melody_one[Note], note_Dur);
+        delay(1.3 * note_Dur);
         noTone(10);
       }
       
@@ -118,15 +118,11 @@ void loop() {
           cool_down = value * 60;
           break;
       }
-      if (selector < 3) {
-        selector++;
-      } else {
-        selector = 0;
-      }
+      (selector < 3) ? selector++ : selector = 0;
       for (int Note = 0; Note < 3; Note++) {
-        int Note_Dur = 1000 / duration_two[Note];
-        tone(10, melody_two[Note], Note_Dur);
-        delay(1.3 * Note_Dur);
+        note_Dur = 1000 / duration_two[Note];
+        tone(10, melody_two[Note], note_Dur);
+        delay(1.3 * note_Dur);
         noTone(10);
       }
 
@@ -197,11 +193,7 @@ void loop() {
       lcd.setCursor(0, 0);
       lcd.print(line);
       lcd.setCursor(line.length() + 1, 0);
-      if (heater) {
-        lcd.write(byte(0));
-      } else {
-        lcd.print(" ");
-      }
+      (heater) ? lcd.write(byte(0)) : lcd.print(" ");
       lcd.setCursor(0, 1);
       lcd.print(line_two);
       delay(1000);
@@ -229,11 +221,7 @@ void loop() {
       lcd.setCursor(0, 0);
       lcd.print(line);
       lcd.setCursor(line.length() + 1, 0);
-      if (heater) {
-        lcd.write(byte(0));
-      } else {
-        lcd.print(" ");
-      }
+      (heater) ? lcd.write(byte(0)) : lcd.print(" ");
       lcd.setCursor(0, 1);
       lcd.print(line_two);
       delay(1000);  
@@ -262,11 +250,7 @@ void loop() {
       lcd.setCursor(0, 0);
       lcd.print(line);
       lcd.setCursor(line.length() + 1, 0);
-      if (heater) {
-        lcd.write(byte(0));
-      } else {
-        lcd.print(" ");
-      }
+      (heater) ? lcd.write(byte(0)) : lcd.print(" ");
       lcd.setCursor(0, 1);
       lcd.print(line_two);
       delay(1000);
